@@ -8,3 +8,14 @@ D:\School\IT\C#\Quoridor\obj\Debug\Quoridor.csproj.GenerateResource.cache
 D:\School\IT\C#\Quoridor\obj\Debug\Quoridor.csproj.CoreCompileInputs.cache
 D:\School\IT\C#\Quoridor\obj\Debug\Quoridor.exe
 D:\School\IT\C#\Quoridor\obj\Debug\Quoridor.pdb
+C:\Users\Zhong Yi Yan\Desktop\Quoridor\bin\Debug\Quoridor.exe.config
+C:\Users\Zhong Yi Yan\Desktop\Quoridor\bin\Debug\Quoridor.exe
+C:\Users\Zhong Yi Yan\Desktop\Quoridor\bin\Debug\Quoridor.pdb
+C:\Users\Zhong Yi Yan\Desktop\Quoridor\obj\Debug\Quoridor.csproj.AssemblyReference.cache
+C:\Users\Zhong Yi Yan\Desktop\Quoridor\obj\Debug\Quoridor.csproj.SuggestedBindingRedirects.cache
+C:\Users\Zhong Yi Yan\Desktop\Quoridor\obj\Debug\Quoridor.Form1.resources
+C:\Users\Zhong Yi Yan\Desktop\Quoridor\obj\Debug\Quoridor.Properties.Resources.resources
+C:\Users\Zhong Yi Yan\Desktop\Quoridor\obj\Debug\Quoridor.csproj.GenerateResource.cache
+C:\Users\Zhong Yi Yan\Desktop\Quoridor\obj\Debug\Quoridor.csproj.CoreCompileInputs.cache
+C:\Users\Zhong Yi Yan\Desktop\Quoridor\obj\Debug\Quoridor.exe
+C:\Users\Zhong Yi Yan\Desktop\Quoridor\obj\Debug\Quoridor.pdb

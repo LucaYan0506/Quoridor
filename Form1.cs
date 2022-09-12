@@ -32,7 +32,7 @@ namespace Quoridor
         {
             //initialize endArea
             Image[] backgroundImages = { Properties.Resources.greenBackground, Properties.Resources.redBackground, Properties.Resources.blueBackground, Properties.Resources.yellowbackground };
-            Point[] locations = { new Point(0, 0), new Point(534, 0), new Point(2, 536), new Point(0,0) };
+            Point[] locations = { new Point(2, 0), new Point(534, 0), new Point(2, 536), new Point(0,0) };
             Size[] sizes = { new Size(600, 65), new Size(67, 600), new Size(600, 65), new Size(67, 600) };
             List<Point[]> points = new List<Point[]>();
             points.Add(
