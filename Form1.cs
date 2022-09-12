@@ -13,15 +13,20 @@ namespace Quoridor
 {
     public partial class Form1 : Form
     {
+        //component to init the game
         Tuple<int, int>[] dirs = new Tuple<int,int>[4];
-        PictureBox[] directions = new PictureBox[4];
+        PawnPictureBox[] directions = new PawnPictureBox[4];
 
-        PictureBox[] Pawns = new PictureBox[4];
-        PictureBox currPawn;
+        PawnPictureBox[] Pawns = new PawnPictureBox[4];
+        PawnPictureBox currPawn;
 
         TriangularPictureBox[] endArea = new TriangularPictureBox[4];
 
         Grid grid = new Grid();
+
+        //component to make the game turn-based
+        int turn = 0;
+
         public Form1()
         {
             InitializeComponent();
@@ -90,11 +95,11 @@ namespace Quoridor
             //initialize directions
             for (int i = 0; i < directions.Length; i++)
             {
-                directions[i] = new PictureBox();
-                directions[i].BackgroundImage = global::Quoridor.Properties.Resources.background;
-                directions[i].SizeMode = PictureBoxSizeMode.Zoom;
+                directions[i] = new PawnPictureBox();
+                directions[i].BackColor = Color.Transparent;
                 directions[i].Image = Image.FromFile("..\\..\\Resources\\Pawn.png");
-                directions[i].BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+                directions[i].BackgroundImageLayout = ImageLayout.None;
+                directions[i].SizeMode = PictureBoxSizeMode.CenterImage;
                 directions[i].Size = new Size(54, 54);
                 directions[i].Visible = false;
                 directions[i].Cursor = Cursors.Hand;
@@ -115,7 +120,7 @@ namespace Quoridor
             Point[] PawnLocations = { new Point(273, 542), new Point(273, 6), new Point(5, 274), new Point(542, 274) };
             for (int i = 0; i < Pawns.Length; i++)
             {
-                Pawns[i] = new PictureBox();
+                Pawns[i] = new PawnPictureBox();
                 Pawns[i].BackColor = Color.Transparent;
                 Pawns[i].BackgroundImage = global::Quoridor.Properties.Resources.background;
                 Pawns[i].BackgroundImageLayout = ImageLayout.None;
@@ -125,7 +130,7 @@ namespace Quoridor
                 Pawns[i].Size = new Size(54, 54);
                 Pawns[i].TabIndex = 1;
                 Pawns[i].TabStop = false;
-                Pawns[i].SizeMode = PictureBoxSizeMode.Zoom;
+                Pawns[i].SizeMode = PictureBoxSizeMode.CenterImage;
                 Pawns[i].Image = PawnImages[i];
                 Pawns[i].Click += PawnImg_Click;
                 this.gridPanel.Controls.Add(Pawns[i]);
@@ -148,16 +153,30 @@ namespace Quoridor
             return res;
         }
 
+        private bool outside_bound(int i, int j, int m, int n)
+        {
+            return i < 0 || i >= m || j < 0 || j >= n;
+        }
+
         private void PawnImg_Click(object sender, EventArgs e)
         {
-            currPawn = (PictureBox)sender;
+            if ( int.Parse(((PawnPictureBox)sender).Name.Substring(5)) != turn)
+                return;
 
-            for (int i =0; i < directions.Length; i++)
+            currPawn = (PawnPictureBox)sender;
+
+            for (int i = 0; i < directions.Length; i++)
             {
-                directions[i].Location = new System.Drawing.Point(currPawn.Location.X + dirs[i].Item1, currPawn.Location.Y + dirs[i].Item2);
-                directions[i].Visible = true;
-            }
+                directions[i].Visible = false;
 
+                Point loc = new Point(currPawn.Location.X + dirs[i].Item1, currPawn.Location.Y + dirs[i].Item2);
+                int[] indexes = location_to_index(loc);
+                if (!outside_bound(indexes[0],indexes[1],grid.Blocks.GetLength(0),grid.Blocks.GetLength(1)) && grid.Blocks[indexes[0], indexes[1]].isEmpty)
+                {
+                    directions[i].Location = loc;
+                    directions[i].Visible = true;
+                }
+            }
         }
 
         private void movePawn(object sender, EventArgs e)
@@ -174,6 +193,7 @@ namespace Quoridor
             grid.Blocks[indexes[0], indexes[1]].isEmpty = false;
 
             hide_directions();
+            turn = (turn + 1) % Pawns.Length;
         }
 
         private void hide_directions()
@@ -189,8 +209,6 @@ namespace Quoridor
 
         private void button1_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(endArea[1].Size.ToString());
-            MessageBox.Show(endArea[1].Location.ToString());
         }
     }
 }

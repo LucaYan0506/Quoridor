@@ -14,14 +14,17 @@ namespace Quoridor
         {
             using (var p = new System.Drawing.Drawing2D.GraphicsPath())
             {
-                p.AddEllipse(new Rectangle(17,0,20,20));
-                p.AddPolygon(new Point[]
-                {
-                    new Point(20,20),
-                    new Point(30,20),
-                    new Point(37,46),
-                    new Point(14,46),
-                }); 
+                Rectangle _rectangle = new Rectangle(14, 0, 21, 21);
+                Point[] _points = new Point[]{
+                    new Point(17,20),
+                    new Point(31,21),
+                    new Point(43,56),
+                    new Point(7,56),
+                };
+
+
+                p.AddEllipse(_rectangle);
+                p.AddPolygon(_points); 
                 this.Region = new Region(p);
                 base.OnPaint(pe);
             }
