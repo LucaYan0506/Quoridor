@@ -27,6 +27,11 @@ namespace Quoridor
         //component to make the game turn-based
         int turn = 0;
 
+
+        //components for verticalLine and horizontalLine
+        PictureBox curr;
+        bool move = false;
+
         public Form1()
         {
             InitializeComponent();
@@ -122,7 +127,6 @@ namespace Quoridor
             {
                 Pawns[i] = new PawnPictureBox();
                 Pawns[i].BackColor = Color.Transparent;
-                Pawns[i].BackgroundImage = global::Quoridor.Properties.Resources.background;
                 Pawns[i].BackgroundImageLayout = ImageLayout.None;
                 Pawns[i].Cursor = Cursors.Hand;
                 Pawns[i].Location = PawnLocations[i];
@@ -139,7 +143,13 @@ namespace Quoridor
                 //init grid
                 int[] indexes = location_to_index(PawnLocations[i]);
                 grid.Blocks[indexes[0], indexes[1]].isEmpty = false;
+                Pawns[i].BackgroundImageLayout = ImageLayout.None;
             }
+
+            //init "your turns"
+            pawnTurn.Image = Pawns[turn].Image;
+            pawnTurn.SizeMode = PictureBoxSizeMode.CenterImage;
+
         }
 
         private int[] location_to_index(Point location)
@@ -194,6 +204,8 @@ namespace Quoridor
 
             hide_directions();
             turn = (turn + 1) % Pawns.Length;
+
+            pawnTurn.Image = Pawns[turn].Image;
         }
 
         private void hide_directions()
@@ -209,6 +221,24 @@ namespace Quoridor
 
         private void button1_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void Line_MouseDown(object sender, MouseEventArgs e)
+        {
+            curr = (PictureBox)sender;
+            move = true;
+        }
+
+        private void Line_MouseUp(object sender, MouseEventArgs e)
+        {
+            move = false;
+        }
+
+        private void Line_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (move)
+                curr.Location = new Point(MousePosition.X - this.Location.X - (MousePosition.X - this.Location.X - curr.Location.X), MousePosition.Y - this.Location.Y - (MousePosition.Y - this.Location.Y - curr.Location.Y));
         }
     }
 }

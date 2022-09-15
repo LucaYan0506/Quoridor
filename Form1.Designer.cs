@@ -30,6 +30,14 @@ namespace Quoridor
         private void InitializeComponent()
         {
             this.gridPanel = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.HorizontalLine = new System.Windows.Forms.PictureBox();
+            this.VerticalLine = new System.Windows.Forms.PictureBox();
+            this.pawnTurn = new Quoridor.PawnPictureBox();
+            this.label2 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.HorizontalLine)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.VerticalLine)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pawnTurn)).BeginInit();
             this.SuspendLayout();
             // 
             // gridPanel
@@ -42,20 +50,86 @@ namespace Quoridor
             this.gridPanel.TabIndex = 1;
             this.gridPanel.Click += new System.EventHandler(this.grid_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(606, 9);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(110, 25);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Your turn";
+            // 
+            // HorizontalLine
+            // 
+            this.HorizontalLine.BackColor = System.Drawing.Color.Brown;
+            this.HorizontalLine.Location = new System.Drawing.Point(611, 109);
+            this.HorizontalLine.Name = "HorizontalLine";
+            this.HorizontalLine.Size = new System.Drawing.Size(134, 14);
+            this.HorizontalLine.TabIndex = 0;
+            this.HorizontalLine.TabStop = false;
+            this.HorizontalLine.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Line_MouseDown);
+            this.HorizontalLine.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Line_MouseMove);
+            this.HorizontalLine.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Line_MouseUp);
+            // 
+            // VerticalLine
+            // 
+            this.VerticalLine.BackColor = System.Drawing.Color.Brown;
+            this.VerticalLine.Location = new System.Drawing.Point(611, 140);
+            this.VerticalLine.Name = "VerticalLine";
+            this.VerticalLine.Size = new System.Drawing.Size(13, 134);
+            this.VerticalLine.TabIndex = 4;
+            this.VerticalLine.TabStop = false;
+            this.VerticalLine.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Line_MouseDown);
+            this.VerticalLine.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Line_MouseMove);
+            this.VerticalLine.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Line_MouseUp);
+            // 
+            // pawnTurn
+            // 
+            this.pawnTurn.Location = new System.Drawing.Point(611, 37);
+            this.pawnTurn.Name = "pawnTurn";
+            this.pawnTurn.Size = new System.Drawing.Size(54, 54);
+            this.pawnTurn.TabIndex = 3;
+            this.pawnTurn.TabStop = false;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(630, 308);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(35, 13);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "label2";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(971, 600);
+            this.ClientSize = new System.Drawing.Size(785, 600);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.VerticalLine);
+            this.Controls.Add(this.HorizontalLine);
+            this.Controls.Add(this.pawnTurn);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.gridPanel);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Line_MouseMove);
+            ((System.ComponentModel.ISupportInitialize)(this.HorizontalLine)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.VerticalLine)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pawnTurn)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.Panel gridPanel;
+        private System.Windows.Forms.Label label1;
+        private PawnPictureBox pawnTurn;
+        private System.Windows.Forms.PictureBox HorizontalLine;
+        private System.Windows.Forms.PictureBox VerticalLine;
+        private System.Windows.Forms.Label label2;
     }
 }
