@@ -33,8 +33,9 @@ namespace Quoridor
             this.label1 = new System.Windows.Forms.Label();
             this.HorizontalLine = new System.Windows.Forms.PictureBox();
             this.VerticalLine = new System.Windows.Forms.PictureBox();
-            this.pawnTurn = new Quoridor.PawnPictureBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.pawnTurn = new Quoridor.PawnPictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.HorizontalLine)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.VerticalLine)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pawnTurn)).BeginInit();
@@ -62,7 +63,7 @@ namespace Quoridor
             // 
             // HorizontalLine
             // 
-            this.HorizontalLine.BackColor = System.Drawing.Color.Brown;
+            this.HorizontalLine.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(67)))), ((int)(((byte)(33)))));
             this.HorizontalLine.Location = new System.Drawing.Point(611, 109);
             this.HorizontalLine.Name = "HorizontalLine";
             this.HorizontalLine.Size = new System.Drawing.Size(134, 14);
@@ -74,7 +75,7 @@ namespace Quoridor
             // 
             // VerticalLine
             // 
-            this.VerticalLine.BackColor = System.Drawing.Color.Brown;
+            this.VerticalLine.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(67)))), ((int)(((byte)(33)))));
             this.VerticalLine.Location = new System.Drawing.Point(611, 140);
             this.VerticalLine.Name = "VerticalLine";
             this.VerticalLine.Size = new System.Drawing.Size(13, 134);
@@ -83,14 +84,6 @@ namespace Quoridor
             this.VerticalLine.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Line_MouseDown);
             this.VerticalLine.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Line_MouseMove);
             this.VerticalLine.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Line_MouseUp);
-            // 
-            // pawnTurn
-            // 
-            this.pawnTurn.Location = new System.Drawing.Point(611, 37);
-            this.pawnTurn.Name = "pawnTurn";
-            this.pawnTurn.Size = new System.Drawing.Size(54, 54);
-            this.pawnTurn.TabIndex = 3;
-            this.pawnTurn.TabStop = false;
             // 
             // label2
             // 
@@ -101,11 +94,30 @@ namespace Quoridor
             this.label2.TabIndex = 5;
             this.label2.Text = "label2";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(629, 372);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // pawnTurn
+            // 
+            this.pawnTurn.Location = new System.Drawing.Point(611, 37);
+            this.pawnTurn.Name = "pawnTurn";
+            this.pawnTurn.Size = new System.Drawing.Size(54, 54);
+            this.pawnTurn.TabIndex = 3;
+            this.pawnTurn.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(785, 600);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.VerticalLine);
             this.Controls.Add(this.HorizontalLine);
@@ -114,7 +126,6 @@ namespace Quoridor
             this.Controls.Add(this.gridPanel);
             this.Name = "Form1";
             this.Text = "Form1";
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Line_MouseMove);
             ((System.ComponentModel.ISupportInitialize)(this.HorizontalLine)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.VerticalLine)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pawnTurn)).EndInit();
@@ -131,5 +142,6 @@ namespace Quoridor
         private System.Windows.Forms.PictureBox HorizontalLine;
         private System.Windows.Forms.PictureBox VerticalLine;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button button1;
     }
 }
