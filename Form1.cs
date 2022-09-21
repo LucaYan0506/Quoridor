@@ -14,8 +14,9 @@ namespace Quoridor
     public partial class Form1 : Form
     {
         //component to init the game
-        bool four_people = false;
-        
+        bool four_people = true;
+        bool[] pawnWin = new bool[4];
+
         Tuple<int, int>[] dirs = new Tuple<int,int>[4];
         PawnPictureBox[] directions = new PawnPictureBox[4];
 
@@ -53,6 +54,18 @@ namespace Quoridor
             //reset turns and walls left
             turn = 0;
             wallsLeft = new int[]{10, 10, 10, 10};
+
+            //reset pawnWin
+            if (four_people)
+                pawnWin = new bool[]
+                    {
+                    false,false,false,false
+                    };
+            else
+                pawnWin = new bool[]
+                    {
+                    false,true,false,true
+                    };
 
             //new grid
             grid = new Grid();
@@ -192,14 +205,33 @@ namespace Quoridor
             return i < 0 || i >= m;
         }
 
+        private bool win(PawnPictureBox curr, Point location)
+        {
+            switch (currPawn.Name)
+            {
+                case "Pawns0":
+                    return location_to_indexForPawns(location)[0] == 0;
+                case "Pawns1":
+                    return location_to_indexForPawns(location)[1] == 8;
+                case "Pawns2":
+                    return location_to_indexForPawns(location)[0] == 8;
+                case "Pawns3":
+                    return location_to_indexForPawns(location)[1] == 0;
+                default:
+                    break;
+            }
+
+            return false;
+        }
+
         private void PawnImg_Click(object sender, EventArgs e)
         {
             //disable the feature to choose the mode (2 players or 4 players)
             playerToolStripMenuItem1.Enabled = false;
             playerToolStripMenuItem.Enabled = false;
 
-            //if it isn't his turn, then don't allow him to click pawn.
-            if (int.Parse(((PawnPictureBox)sender).Name.Substring(5)) != turn)
+            //if it isn't his turn, then don't allow him to click pawn. if this pawn won, then don't allow to click the pawn
+            if (int.Parse(((PawnPictureBox)sender).Name.Substring(5)) != turn || pawnWin[turn])
                 return;
 
             currPawn = (PawnPictureBox)sender;
@@ -274,12 +306,34 @@ namespace Quoridor
             //update grid
             indexes = location_to_indexForPawns(currPawn.Location);
             grid.Blocks[indexes[0], indexes[1]].isEmpty = false;
+            
+            //check if someone win
+            if (win(currPawn, currPawn.Location))
+            {
+                pawnWin[turn] = true;
+
+                switch (currPawn.Name)
+                {
+                    case "Pawns0":
+                        MessageBox.Show("Green Pawn Won!");
+                        break;
+                    case "Pawns1":
+                        MessageBox.Show("Red Pawn Won!");
+                        break;
+                    case "Pawns2":
+                        MessageBox.Show("Blue Pawn Won!");
+                        break;
+                    case "Pawns3":
+                        MessageBox.Show("Yellow Pawn Won!");
+                        break;
+                    default:
+                        break;
+                }
+            }
 
             hide_directions();
-            if (four_people)
-                turn = (turn + 1) % Pawns.Length;
-            else
-                turn = (turn + 2) % Pawns.Length;
+
+            nextTurn();
 
             //update image
             pawnTurn.Image = Pawns[turn].Image;
@@ -291,6 +345,46 @@ namespace Quoridor
         {
             for (int i = 0; i < directions.Length; i++)
                 directions[i].Visible = false;
+        }
+
+        private void nextTurn()
+        {
+            turn = (turn + 1) % Pawns.Length;
+
+            //if pawn[turn] is the only pawn that didn't win that it lost
+            int n_pawnLoss = 0;
+            foreach (bool x in pawnWin)
+                n_pawnLoss += + (x ? 0 : 1);
+
+            //stop if there isn't any pawns
+            if (n_pawnLoss == 0)
+                return;
+
+            if (n_pawnLoss == 1 && !pawnWin[turn])
+            {
+                pawnWin[turn] = true;
+                switch (Pawns[turn].Name)
+                {
+                    case "Pawns0":
+                        MessageBox.Show("Green Pawn Lost");
+                        break;
+                    case "Pawns1":
+                        MessageBox.Show("Red Pawn Lost");
+                        break;
+                    case "Pawns2":
+                        MessageBox.Show("Blue Pawn Lost");
+                        break;
+                    case "Pawns3":
+                        MessageBox.Show("Yellow Pawn Lost");
+                        break;
+                    default:
+                        break;
+                }
+                return;
+            }
+            
+            if (pawnWin[turn])
+                nextTurn();
         }
 
         private void grid_Click(object sender, EventArgs e)
@@ -326,7 +420,8 @@ namespace Quoridor
             //hide all grey pans (if exists)
             hide_directions();
 
-            if (e.Button == MouseButtons.Right)
+            //if the user click with the right button or if this pawn won, then don't allow to click the pawn
+            if (e.Button == MouseButtons.Right || pawnWin[turn])
                 return;
 
             curr = (PictureBox)sender;
@@ -344,6 +439,9 @@ namespace Quoridor
 
         private void Line_MouseUp(object sender, MouseEventArgs e)
         {
+            if (!move)
+                return;
+
             //location that the new line will be (in the form & in the grid/backend)
             Point lineLocation = new Point(((PictureBox)sender).Location.X, ((PictureBox)sender).Location.Y - 29);
 
@@ -411,11 +509,8 @@ namespace Quoridor
                 //decrese walls left
                 wallsLeft[turn]--;
 
-                //next turn
-                if (four_people)
-                    turn = (turn + 1) % Pawns.Length;
-                else
-                    turn = (turn + 2) % Pawns.Length;
+                nextTurn();
+
                 //update image
                 pawnTurn.Image = Pawns[turn].Image;
                 //update walls left
@@ -443,6 +538,8 @@ namespace Quoridor
             playerToolStripMenuItem.BackColor = SystemColors.Control;
 
             four_people = true;
+
+            InitGame();
         }
 
         private void playerToolStripMenuItem_Click_1(object sender, EventArgs e)
@@ -451,6 +548,8 @@ namespace Quoridor
             playerToolStripMenuItem1.BackColor = SystemColors.Control;
 
             four_people = false;
+
+            InitGame();
         }
 
         private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
