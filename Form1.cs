@@ -207,7 +207,7 @@ namespace Quoridor
 
         private bool win(PawnPictureBox curr, Point location)
         {
-            switch (currPawn.Name)
+            switch (curr.Name)
             {
                 case "Pawns0":
                     return location_to_indexForPawns(location)[0] == 0;
@@ -411,6 +411,35 @@ namespace Quoridor
             return res;
         }
 
+        private bool isWinPossible(PawnPictureBox curr, Point loc, ref bool[,] visited)
+        {
+            int[] indexes = location_to_indexForPawns(loc);
+            if (outside_bound(indexes[0], 9) || outside_bound(indexes[1], 9) || visited[indexes[0], indexes[1]])
+                return false;
+
+            //MessageBox.Show(indexes[0] + "  " + indexes[1]);
+
+            if (win(curr, loc))
+                return true;
+
+            //set curr "cell" as visited
+            visited[indexes[0], indexes[1]] = true;
+
+            Border[] borders = new Border[]
+            {
+                grid.Blocks[indexes[0],indexes[1]].BorderRight,
+                grid.Blocks[indexes[0],indexes[1]].BorderLeft,
+                grid.Blocks[indexes[0],indexes[1]].BorderBot,
+                grid.Blocks[indexes[0],indexes[1]].BorderTop,
+            };
+
+            for (int i = 0; i < dirs.Length; i++)
+                if (borders[i].isEmpty && isWinPossible(curr, new Point(loc.X + dirs[i].Item1, loc.Y + dirs[i].Item2),ref visited))
+                    return true;
+
+            return false;
+        }
+
         private void Line_MouseDown(object sender, MouseEventArgs e)
         {
             //disable the feature to choose the mode (2 players or 4 players)
@@ -479,6 +508,25 @@ namespace Quoridor
 
                     grid.Blocks[blockIndex[0], blockIndex[1] + 1].BorderBot.isEmpty = false;
                     grid.Blocks[blockIndex[0] + 1, blockIndex[1] + 1].BorderTop.isEmpty = false;
+
+                    //make sure that it won't completely block the opponent
+                    for (int i = 0; i < Pawns.Length; i++)
+                    {
+                        if (pawnWin[i])
+                            continue;
+                        bool[,] visited = new bool[9, 9];
+                        if (!isWinPossible(Pawns[i], Pawns[i].Location, ref visited))
+                        {
+                            MessageBox.Show("You can't completely block the opponent", "Quoridor", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            //remove the line from grid and return
+                            grid.Blocks[blockIndex[0], blockIndex[1]].BorderBot.isEmpty = true;
+                            grid.Blocks[blockIndex[0] + 1, blockIndex[1]].BorderTop.isEmpty = true;
+
+                            grid.Blocks[blockIndex[0], blockIndex[1] + 1].BorderBot.isEmpty = true;
+                            grid.Blocks[blockIndex[0] + 1, blockIndex[1] + 1].BorderTop.isEmpty = true;
+                            return;
+                        }
+                    }
                 }
                 else
                 {
@@ -495,6 +543,25 @@ namespace Quoridor
 
                     grid.Blocks[blockIndex[0] + 1, blockIndex[1]].BorderRight.isEmpty = false;
                     grid .Blocks[blockIndex[0] + 1, blockIndex[1] + 1].BorderLeft.isEmpty = false;
+
+                    //make sure that it won't completely block the opponent
+                    for (int i = 0; i < Pawns.Length; i++)
+                    {
+                        if (pawnWin[i])
+                            continue;
+                        bool[,] visited = new bool[9, 9];
+                        if (!isWinPossible(Pawns[i], Pawns[i].Location, ref visited))
+                        {
+                            MessageBox.Show("You can't completely block the opponent", "Quoridor", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            //remove the line from grid and return
+                            grid.Blocks[blockIndex[0], blockIndex[1]].BorderRight.isEmpty = true;
+                            grid.Blocks[blockIndex[0], blockIndex[1] + 1].BorderLeft.isEmpty = true;
+
+                            grid.Blocks[blockIndex[0] + 1, blockIndex[1]].BorderRight.isEmpty = true;
+                            grid.Blocks[blockIndex[0] + 1, blockIndex[1] + 1].BorderLeft.isEmpty = true;
+                            return;
+                        }
+                    }
                 }
 
                 //generate the line (in the form)
