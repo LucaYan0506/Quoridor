@@ -188,6 +188,19 @@ namespace Quoridor
             for (int i = 0; i < barrier2.GetLength(0); i++)
                 for (int j = 0; j < barrier2.GetLength(1); j++)
                     barrier2[i, j] = new Point(0 + (j * 66), 90 + (i * 67));
+
+            //if there are only 2 people disable other 2
+            if (!four_people)
+            {
+                //update grid
+                Pawns[1].Visible = false;
+                int[] indexes = location_to_indexForPawns(Pawns[1].Location);
+                grid.Blocks[indexes[0], indexes[1]].isEmpty = true;
+
+                Pawns[3].Visible = false;
+                indexes = location_to_indexForPawns(Pawns[3].Location);
+                grid.Blocks[indexes[0], indexes[1]].isEmpty = true;
+            }
         }
 
         private int[] location_to_indexForPawns(Point location)
